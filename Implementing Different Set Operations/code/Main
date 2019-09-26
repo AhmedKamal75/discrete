@@ -1,0 +1,61 @@
+package com.company;
+
+import java.util.LinkedList;
+import java.util.Scanner;
+
+public class Main {
+    private static SetClass Universe;
+    private static LinkedList<SetClass> setList;
+    private static Scanner scanner = new Scanner(System.in);
+
+    public static void main(String[] args) {
+        Universe = getSet(0);
+
+        setList = getSets();
+
+        System.out.println(Universe.toString());
+        for (SetClass setClass : setList) {
+            System.out.println(setClass.toString());
+        }
+
+    }
+
+    /* asks the user to enter a set of strings
+    */
+
+    private static SetClass getSet(int number){
+        String n;
+        if (number == 0){
+            n = "universe";
+        } else {
+            n = "number " + number;
+        }
+        System.out.println("enter the set ( " + n + " ) separated by ','");
+        String s = scanner.nextLine();
+        s.replaceAll("\\s+","");
+        if (s.equals("")) {
+            return null;
+        }
+        String[] strings = s.split(",");
+        SetClass set1 = new SetClass();
+        for (String s1 : strings){
+            set1.add(s1);
+        }
+        return set1;
+    }
+
+    private static LinkedList<SetClass> getSets(){
+        LinkedList<SetClass> sets = new LinkedList<>();
+        boolean stop = false;
+        int size = 1;
+        do {
+            System.out.println("do you wanna enter another set: <y/n>");
+            if (scanner.nextLine().equals("y")){
+                sets.add(getSet(size++));
+            } else {
+                stop = true;
+            }
+        } while (!stop);
+        return sets;
+    }
+}
