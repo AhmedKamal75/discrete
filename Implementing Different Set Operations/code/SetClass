@@ -19,19 +19,20 @@ public class SetClass {
      */
 
     public boolean add(String element){
-        if (exists(element)){
+        if (contains(element)){
             return false;
         }
         Node newNode = new Node(element , head.getNext(), head);
         head.getNext().setPrevious(newNode);
         head.setNext(newNode);
+        size++;
         return true;
     }
 
     /* check if the element does exist in the set or not
      */
 
-    private boolean exists(String element){
+    public boolean contains(String element){
         Node node = head;
         while (node.getNext().getData() != null){
             if (node.getNext().getData().equals(element)){
@@ -52,11 +53,38 @@ public class SetClass {
                 node = node.getNext();
                 node.getPrevious().setNext(node.getNext());
                 node.getNext().setPrevious(node.getPrevious());
+                size--;
                 return true;
             }
             node = node.getNext();
         }
         return false;
+    }
+
+
+    public SetClass copy(){
+        SetClass set = new SetClass();
+        Node node = head;
+        while (node.getNext().getData() != null){
+            set.add(node.getNext().getData());
+            node = node.getNext();
+        }
+        return set;
+    }
+
+    public String[] toArray(){
+        String[] strings = new String[size];
+        int i = 0;
+        Node node = head;
+        while (node.getNext().getData() != null){
+            strings[i++] = node.getNext().getData();
+            node = node.getNext();
+        }
+        return strings;
+    }
+
+    public int getSize() {
+        return size;
     }
 
     public String toString(){
