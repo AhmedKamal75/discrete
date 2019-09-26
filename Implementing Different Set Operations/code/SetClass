@@ -1,0 +1,75 @@
+package com.company;
+
+public class SetClass {
+    private Node head;
+    private Node tail;
+    private int size;
+
+
+    public SetClass() {
+        head = new Node(null,null,null);
+        tail = new Node(null,null,head);
+        head.setNext(tail);
+        size = 0;
+    }
+
+    /*
+    * takes the string as a parameter
+    * and returns true of the insertion is success
+     */
+
+    public boolean add(String element){
+        if (exists(element)){
+            return false;
+        }
+        Node newNode = new Node(element , head.getNext(), head);
+        head.getNext().setPrevious(newNode);
+        head.setNext(newNode);
+        return true;
+    }
+
+    /* check if the element does exist in the set or not
+     */
+
+    private boolean exists(String element){
+        Node node = head;
+        while (node.getNext().getData() != null){
+            if (node.getNext().getData().equals(element)){
+                return true;
+            }
+            node = node.getNext();
+        }
+        return false;
+    }
+
+    /*removes the parameter from the set if exists
+    */
+
+    public boolean remove(String element){
+        Node node = head;
+        while (node.getNext().getData() != null){
+            if (node.getNext().getData().equals(element)){
+                node = node.getNext();
+                node.getPrevious().setNext(node.getNext());
+                node.getNext().setPrevious(node.getPrevious());
+                return true;
+            }
+            node = node.getNext();
+        }
+        return false;
+    }
+
+    public String toString(){
+        String s = "The set = {";
+        Node node = head.getNext();
+        while (node.getData() != null){
+            s = s + node.getData();
+            if (node.getNext().getData() != null) {
+                s = s + ",";
+            }
+            node = node.getNext();
+        }
+        return s + "}";
+    }
+
+}
