@@ -10,52 +10,151 @@ public class Main {
 
     public static void main(String[] args) {
         Universe = getSet(0);
-
         setList = getSets();
+//
+//        System.out.println(Universe.toString());
+//        for (SetClass setClass : setList) {
+//            System.out.println(setClass.toString());
+//        }
+//
+//        System.out.println("union :");
+//        System.out.println(union(setList.get(0), setList.get(1)));
+//        System.out.println("intersection :");
+//        System.out.println(intersection(setList.get(0), setList.get(1)));
+//        System.out.println("complement : ");
+//        System.out.println(complement(setList.get(0)));
+//
 
-        System.out.println(Universe.toString());
-        for (SetClass setClass : setList) {
-            System.out.println(setClass.toString());
+
+    run();
+    boolean quite = false;
+    do {
+        System.out.print("do you wanna do another operation? <y/n>");
+        if (scanner.nextLine().equals("y")){
+            run();
+        }
+        quite = true;
+    } while (!quite);
+
+    }
+
+    private static void run(){
+        System.out.println("what kind of operation do you wish to do ? \n" +
+                "1 - Union \n" +
+                "2 - Intersection \n" +
+                "3 - Complement \n");
+        while (!scanner.hasNextInt()){}
+        int choice = scanner.nextInt();
+        scanner.nextLine();
+        System.out.println("you have entered " + setList.size() + " sets aside from the universal one, choose from them");
+        switch (choice){
+            case 1:  // union
+                int[] chosenSets = choose();
+                System.out.println("the union of set # " + (chosenSets[0] + 1 ) + " and set # " + (chosenSets[1] + 1 ) + " is : ");
+                System.out.println(union(setList.get(chosenSets[0]), setList.get(chosenSets[1])).toString());
+                break;
+            case 2:
+                chosenSets = choose();
+                System.out.println("the intersection of set # " + (chosenSets[0] + 1 ) + " and set # " + (chosenSets[1] + 1 ) + " is : ");
+                System.out.println(intersection(setList.get(chosenSets[0]), setList.get(chosenSets[1])).toString());
+                break;
+            case 3:
+                System.out.print("enter the number of set you want to complement :");
+                while (!scanner.hasNextInt()){}
+                int n = scanner.nextInt() - 1;
+                scanner.nextLine();
+                System.out.println("the complement of the set # " + (n + 1) + " is :");
+                System.out.println(complement(setList.get(n)).toString());
+                break;
+            default:
+                System.out.println("wrong choice");
         }
 
     }
 
-    /* asks the user to enter a set of strings
-    */
+    private static int[] choose(){
+        int[] arr = new int[2];
+        System.out.print("enter the number of the first set: ");
+        while (!scanner.hasNextInt()){}
+        arr[0] = scanner.nextInt() - 1;
+        scanner.nextLine();
+        System.out.print("enter the number of the second set: ");
+        while (!scanner.hasNextInt()){}
+        arr[1] = scanner.nextInt() - 1;
+        scanner.nextLine();
+        return arr;
+    }
 
-    private static SetClass getSet(int number){
+    /* asks the user to enter a set of strings
+     */
+
+    private static SetClass getSet(int number) {
         String n;
-        if (number == 0){
+        if (number == 0) {
             n = "universe";
         } else {
             n = "number " + number;
         }
-        System.out.println("enter the set ( " + n + " ) separated by ','");
+        System.out.println("enter the set ( " + n + " ) separated by ',' <spaces are not ignored> :");
         String s = scanner.nextLine();
-        s.replaceAll("\\s+","");
         if (s.equals("")) {
             return null;
         }
         String[] strings = s.split(",");
         SetClass set1 = new SetClass();
-        for (String s1 : strings){
+        for (String s1 : strings) {
             set1.add(s1);
         }
         return set1;
     }
 
-    private static LinkedList<SetClass> getSets(){
+    private static LinkedList<SetClass> getSets() {
         LinkedList<SetClass> sets = new LinkedList<>();
         boolean stop = false;
         int size = 1;
         do {
             System.out.println("do you wanna enter another set: <y/n>");
-            if (scanner.nextLine().equals("y")){
+            if (scanner.nextLine().equals("y")) {
                 sets.add(getSet(size++));
             } else {
                 stop = true;
             }
         } while (!stop);
         return sets;
+    }
+
+    private static SetClass union(SetClass set1, SetClass set2) {
+        SetClass set = set1.copy();
+        for (String string : set2.toArray()) {
+            if (!set.contains(string)) {
+                set.add(string);
+            }
+        }
+        return set;
+    }
+
+    private static SetClass intersection(SetClass set1, SetClass set2) {
+        SetClass set = new SetClass();
+        String[] arr1 = set1.toArray();
+        String[] arr2 = set2.toArray();
+        for (int i = 0; i < arr1.length; i++) {
+            for (int j = 0; j < arr2.length; j++) {
+                if (arr1[i].equals(arr2[j])) {
+                    set.add(arr1[i]);
+                }
+            }
+        }
+        return set;
+    }
+
+    private static SetClass complement(SetClass set) {
+        SetClass set1 = new SetClass();
+        String[] arr = Universe.toArray();
+        for (String string : arr) {
+            if (!set.contains(string)) {
+                set1.add(string);
+            }
+        }
+        return set1;
     }
 }
