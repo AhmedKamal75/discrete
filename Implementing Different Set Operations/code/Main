@@ -11,20 +11,6 @@ public class Main {
     public static void main(String[] args) {
         Universe = getSet(0);
         setList = getSets();
-//
-//        System.out.println(Universe.toString());
-//        for (SetClass setClass : setList) {
-//            System.out.println(setClass.toString());
-//        }
-//
-//        System.out.println("union :");
-//        System.out.println(union(setList.get(0), setList.get(1)));
-//        System.out.println("intersection :");
-//        System.out.println(intersection(setList.get(0), setList.get(1)));
-//        System.out.println("complement : ");
-//        System.out.println(complement(setList.get(0)));
-//
-
 
     run();
     boolean quite = false;
